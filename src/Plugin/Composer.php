@@ -85,6 +85,18 @@ class Composer extends Plugin implements ZeroConfigPluginInterface
      */
     public function execute()
     {
+        $vendorToCache  = false;
+        $vendorCacheKey = '';
+        $lockFilepath   = $this->build->getBuildPath() . '/composer.lock';
+        if (\is_file($lockFilepath)) {
+            $vendorCacheKey = \md5_file($lockFilepath);
+            if (!\is_dir(RUNTIME_DIR . 'composer_cache/' . $vendorCacheKey)) {
+                $vendorToCache = true;
+            } else {
+                \exec('cp --recursive --no-target-directory "' . RUNTIME_DIR . 'composer_cache/' . $vendorCacheKey . '" "' . $this->build->getBuildPath() . 'vendor' . '"');
+            }
+        }
+
         $composerLocation = $this->executable;
 
         $cmd = $composerLocation . ' --no-ansi --no-interaction ';
@@ -111,6 +123,19 @@ class Composer extends Plugin implements ZeroConfigPluginInterface
 
         $cmd .= ' --working-dir="%s" %s';
 
-        return $this->builder->executeCommand($cmd, $this->directory, $this->action);
+        $result = $this->builder->executeCommand($cmd, $this->directory, $this->action);
+
+        if ('update' === $this->action) {
+            $vendorCacheKey = \md5_file($lockFilepath);
+            if (!\is_dir(RUNTIME_DIR . 'composer_cache/' . $vendorCacheKey)) {
+                $vendorToCache = true;
+            }
+        }
+
+        if ($vendorToCache && $vendorCacheKey) {
+            \exec('cp --recursive --no-target-directory "' . $this->build->getBuildPath() . 'vendor' . '" "' . RUNTIME_DIR . 'composer_cache/' . $vendorCacheKey . '"');
+        }
+
+        return $result;
     }
 }

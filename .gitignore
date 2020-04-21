@@ -15,6 +15,9 @@
 /runtime/cache
 !/runtime/cache/.gitkeep
 
+/runtime/composer_cache
+!/runtime/composer_cache/.gitkeep
+
 /runtime/status_cache
 !/runtime/status_cache/.gitkeep
 
