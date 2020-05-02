@@ -168,7 +168,7 @@ plugin option `priority_path`).
 * Option `binary_path` sets default binary path for all plugins (It may be overloaded by the plugin option 
 `priority_path`). For example: `binary_path: /usr/local/bin`.
 
-* Option `prefer_symlink` allows to use symlinks as a source build path. The option works only for local build source 
+* Option `prefer_symlink` allows using symlinks as a source build path. The option works only for local build source 
 (`LocalBuild`).
 
 * Option `build_priority: N` builds of a project with a higher value (like 1500) are handled after builds of projects 
@@ -202,21 +202,29 @@ The build goes through some stages. During each stage some plugins can be execut
 
 * `test` - The stage of testing. Runs after the setup stage if the setup was successful. In this stage all the main plugins and statistical code analyzers are executed.
 
-There is also a priority_path option available to all plugins. It allows you to change the search order of the plugin executable file. Possible option values are:
+    **Завершение отдельного плагина с ошибками не всегда обозначает провал всего этапа**, т.к. можно 
+    использовать опцию `allow_failures` доступную всем плагинам, которая позволяет игнорировать ошибки конкретного 
+    плагина в статусе сборки (Пример: `allow_failures: true`).
 
-* `local` - In the first place search in the buid directory vendor/bin, then - in global, then - in system, then - in priority_path;
+    **Так же можно ограничить количество допустимых ошибок и предупреждений, которое приводит к провалу конкретного 
+    плагина** с помощью опций `allowed_errors` и `allowed_warnings` (Например: `allowed_warnings: 2`). Значение `-1` 
+    будет означать неограниченное кол-во. **Эти опции доступны не для всех плагинов**, подробности можно посмотреть в 
+    [документации к конкретному плагину](README.md).
 
-* `global` - In the first place search in the directory vendor/bin *PHP Censor*,  then - in local, then - in system, then - in priority_path;
+    There is also a `priority_path` option available to all plugins. **It allows you to change the search order of the plugin executable file**. Possible option values are:
 
-* `system` - In the first place search among the system utilities ( /bin, /usr/bin etc., use  which), then - in local, then - in global, then - in priority_path;
+    * `local` - In the first place search in the build directory `vendor/bin`, then - in `global`, then - in `system`, then - in `priority_path`;
 
-* `binary_path` - First of all, look for the specific path specified in the binary_path option, then - in local, then - in global, then - in system;
+    * `global` - In the first place search in the directory `vendor/bin` *PHP Censor*,  then - in `local`, then - in `system`, then - in `priority_path`;
+    
+    * `system` - In the first place search among the system utilities (`/bin`, `/usr/bin` etc., use `which`), then - in `local`, then - in `global`, then - in `priority_path`;
+    
+    * `binary_path` - First of all, look for the specific path specified in the `binary_path` option, then - in `local`, then - in `global`, then - in `system`;
 
-The binary_path option allows you to set a specific path to the directory with the executable plugin file. There is also a binary_name option which alows to set an alternative name for the executable file (a string or an array of strings).
+    The `binary_path` option allows you to set a specific path to the directory with the executable plugin file. There is also a `binary_name` option which allows to set an alternative name for the executable file (a string or an array of strings).
 
-Example:
-````
-yaml
+    Example:
+    ```yaml
     setup:
       composer:
         priority_path: binary_path
@@ -226,10 +234,9 @@ yaml
           - composer-1.4
           - composer-local
         action: install
-
-````
-
-Search order of the executable file by default: local -> global -> system -> binary_path.
+    ```
+    
+    **Search order of the executable file by default**: local -> global -> system -> binary_path.
 
 * `deploy` - The stage of  the project deployment. Runs after the stage of testing, if the tests were successful. In this stage deployment plugins should be called ([Shell](plugins/shell.md), [Deployer](plugins/deployer.md), [Mage](plugins/mage.md) и etc.). This stage is very similar to test.
 
