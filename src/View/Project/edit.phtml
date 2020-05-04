@@ -13,6 +13,11 @@ use PHPCensor\Helper\Lang;
             lineWrapping: true,
             lineNumbers: true
         });
+        CodeMirror.fromTextArea(document.getElementById('element-periodical_config'), {
+            mode: "yaml",
+            lineWrapping: true,
+            lineNumbers: true
+        });
         CodeMirror.fromTextArea(document.getElementById('element-environments'), {
             mode: "yaml",
             lineWrapping: true,

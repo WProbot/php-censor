@@ -85,6 +85,10 @@ class ProjectService
             $project->setBuildConfig($options['build_config']);
         }
 
+        if (array_key_exists('periodical_config', $options)) {
+            $project->setPeriodicalConfig($options['periodical_config']);
+        }
+
         if (array_key_exists('allow_public_status', $options)) {
             $project->setAllowPublicStatus($options['allow_public_status']);
         }

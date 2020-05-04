@@ -398,6 +398,7 @@ class ProjectController extends WebController
                 'ssh_public_key'         => $this->getParam('ssh_public_key', null),
                 'overwrite_build_config' => (bool)$this->getParam('overwrite_build_config', true),
                 'build_config'           => $this->getParam('build_config', null),
+                'periodical_config'      => $this->getParam('periodical_config', null),
                 'allow_public_status'    => (bool)$this->getParam('allow_public_status', false),
                 'default_branch'         => $defaultBranch ? $defaultBranch : Branch::getDefaultBranchName($type),
                 'default_branch_only'    => (bool)$this->getParam('default_branch_only', false),
@@ -482,6 +483,7 @@ class ProjectController extends WebController
             'ssh_public_key'         => $this->getParam('ssh_public_key', null),
             'overwrite_build_config' => (bool)$this->getParam('overwrite_build_config', false),
             'build_config'           => isset($formValues['build_config']) ? $formValues['build_config'] : null,
+            'periodical_config'      => isset($formValues['periodical_config']) ? $formValues['periodical_config'] : null,
             'allow_public_status'    => (bool)$this->getParam('allow_public_status', false),
             'archived'               => (bool)$this->getParam('archived', false),
             'default_branch_only'    => (bool)$this->getParam('default_branch_only', false),
@@ -579,6 +581,13 @@ class ProjectController extends WebController
         $form->addField($field);
 
         $field = Form\Element\TextArea::create('build_config', Lang::get('build_config'), false);
+        $field->setClass('form-control')->setContainerClass('form-group');
+        $field->setRows(6);
+        $field->setValidator(new Form\Validator\Yaml());
+        $field->setDataTransformator(new Form\DataTransformer\Yaml());
+        $form->addField($field);
+
+        $field = Form\Element\TextArea::create('periodical_config', Lang::get('periodical_config'), false);
         $field->setClass('form-control')->setContainerClass('form-group');
         $field->setRows(6);
         $field->setValidator(new Form\Validator\Yaml());

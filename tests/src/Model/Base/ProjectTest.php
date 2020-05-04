@@ -26,6 +26,7 @@ class ProjectTest extends TestCase
             'type'                   => null,
             'access_information'     => null,
             'build_config'           => null,
+            'periodical_config'      => null,
             'overwrite_build_config' => 1,
             'allow_public_status'    => 0,
             'archived'               => 0,

@@ -115,8 +115,8 @@ PHP Censor',
     'project_title' => 'Project Title',
     'project_private_key' => 'Private key to use to access repository
                                 (leave blank for local and/or anonymous remotes)',
-    'build_config' => 'PHP Censor build config for this project
-                                (if you cannot add a .php-censor.yml file in the project repository)',
+    'build_config' => 'PHP Censor build config for this project (if you cannot add a .php-censor.yml file in the project repository)',
+    'periodical_config' => 'PHP Censor periodical build config for this project',
     'default_branch'      => 'Default branch name',
     'default_branch_only' => 'Build default branch only',
     'overwrite_build_config' => 'Overwrite in-repository file config by in-database config? If checkbox not checked then in-database config will be merged with file config.',
